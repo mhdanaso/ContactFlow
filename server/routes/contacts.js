@@ -1,10 +1,11 @@
 const express = require('express');
 const Contact = require('../models/Contact');
+const protect = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Get all contacts
-router.get('/', async (req, res) => {
+router.get('/', protect, async (req, res) => {
   try {
     const contacts = await Contact.find();
 
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create a new contact
-router.post('/', async (req, res) => {
+router.post('/', protect, async (req, res) => {
   try {
     const contact = await Contact.create(req.body);
 
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update a contact
-router.put('/:id', async (req, res) => {
+router.put('/:id', protect, async (req, res) => {
   try {
     const contact = await Contact.findByIdAndUpdate(
       req.params.id,
@@ -56,7 +57,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a contact
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, async (req, res) => {
   try {
     const contact = await Contact.findByIdAndDelete(req.params.id);
 
