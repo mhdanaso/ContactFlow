@@ -29,4 +29,30 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Update a contact
+router.put('/:id', async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!contact) {
+      return res.status(404).json({
+        message: 'Contact not found'
+      });
+    }
+
+    res.status(200).json(contact);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+});
+
 module.exports = router;
