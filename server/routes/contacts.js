@@ -7,7 +7,9 @@ const router = express.Router();
 // Get all contacts
 router.get('/', protect, async (req, res) => {
   try {
-    const contacts = await Contact.find();
+    const contacts = await Contact.find({
+  user: req.user.id
+  });
 
     res.status(200).json(contacts);
   } catch (error) {
@@ -20,7 +22,10 @@ router.get('/', protect, async (req, res) => {
 // Create a new contact
 router.post('/', protect, async (req, res) => {
   try {
-    const contact = await Contact.create(req.body);
+    const contact = await Contact.create({
+  ...req.body,
+  user: req.user.id
+  });
 
     res.status(201).json(contact);
   } catch (error) {
@@ -33,8 +38,11 @@ router.post('/', protect, async (req, res) => {
 // Update a contact
 router.put('/:id', protect, async (req, res) => {
   try {
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.id,
+    const contact = await Contact.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        user: req.user.id
+      },
       req.body,
       {
         new: true,
@@ -59,7 +67,10 @@ router.put('/:id', protect, async (req, res) => {
 // Delete a contact
 router.delete('/:id', protect, async (req, res) => {
   try {
-    const contact = await Contact.findByIdAndDelete(req.params.id);
+    const contact = await Contact.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user.id
+    });
 
     if (!contact) {
       return res.status(404).json({
