@@ -33,7 +33,7 @@ const contactSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ['New', 'Contacted', 'Active', 'Converted', 'Inactive'],
+      enum: ['New', 'Contacted', 'Qualified', 'Active', 'Converted', 'Inactive'],
       default: 'New'
     },
 

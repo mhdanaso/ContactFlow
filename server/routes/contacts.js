@@ -7,9 +7,32 @@ const router = express.Router();
 // Get all contacts
 router.get('/', protect, async (req, res) => {
   try {
-    const contacts = await Contact.find({
+   const { search, status, category } = req.query;
+
+const filter = {
   user: req.user.id
-  });
+};
+
+// Search by name, email, or company
+if (search) {
+  filter.$or = [
+    { name: { $regex: search, $options: 'i' } },
+    { email: { $regex: search, $options: 'i' } },
+    { company: { $regex: search, $options: 'i' } }
+  ];
+}
+
+// Filter by status
+if (status) {
+  filter.status = status;
+}
+
+// Filter by category
+if (category) {
+  filter.category = category;
+}
+
+const contacts = await Contact.find(filter);
 
     res.status(200).json(contacts);
   } catch (error) {
