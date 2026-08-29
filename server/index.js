@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const contactRoutes = require('./routes/contacts');
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/contacts', contactRoutes);
-
+app.use('/api/admin', adminRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
