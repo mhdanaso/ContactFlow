@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
+  const navigate = useNavigate();
     const [formData, setFormData] = useState({
   name: '',
   email: '',
   password: '',
 });
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState('');
 
 const handleChange = (event) => {
   const { name, value } = event.target;
@@ -20,6 +23,8 @@ const handleChange = (event) => {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
+
+  setLoading(true);
 
   try {
     const response = await fetch(
@@ -35,8 +40,17 @@ const handleSubmit = async (event) => {
 
     const data = await response.json();
 
+   if (!response.ok) {
+      setError(data.message || 'Something went wrong');
+      return;
+    }
+
+    navigate('/');
+    console.log(data);
   } catch (error) {
-    console.error(error);
+    setError('Unable to connect to the server. Please try again.');
+  } finally {
+    setLoading(false);
   }
 };
   return (
@@ -71,6 +85,11 @@ const handleSubmit = async (event) => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="space-y-5"
         >
+          {error && (
+         <div className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+          {error}
+         </div>
+         )}
           <div>
             <label className="mb-2 block text-sm font-medium text-[#1d1d1f]">
               Full name
@@ -120,7 +139,7 @@ const handleSubmit = async (event) => {
             whileTap={{ scale: 0.98 }}
             type="submit"
              className="mt-3 w-full rounded-xl bg-[#1d1d1f] py-3.5 text-[17px] font-medium text-white transition hover:bg-[#2c2c2e]"          >
-            Create account
+            {loading ? 'Creating account...' : 'Create account'}
           </motion.button>
         </motion.form>
 
