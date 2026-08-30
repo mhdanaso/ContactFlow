@@ -1,7 +1,44 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 function Register() {
+    const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  password: '',
+});
+
+const handleChange = (event) => {
+  const { name, value } = event.target;
+
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+};
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  try {
+    const response = await fetch(
+      'http://localhost:5000/api/auth/register',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+
+    const data = await response.json();
+
+  } catch (error) {
+    console.error(error);
+  }
+};
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 py-10">
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md flex-col justify-center">
@@ -28,6 +65,7 @@ function Register() {
 
         {/* Register form */}
         <motion.form
+          onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -38,8 +76,11 @@ function Register() {
               Full name
             </label>
 
-            <input
+           <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Your name"
               className="w-full rounded-xl border border-[#d2d2d7] bg-white px-4 py-3.5 text-[17px] text-[#1d1d1f] outline-none transition focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10"
             />
@@ -52,6 +93,9 @@ function Register() {
 
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="name@example.com"
               className="w-full rounded-xl border border-[#d2d2d7] bg-white px-4 py-3.5 text-[17px] text-[#1d1d1f] outline-none transition focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10"
             />
@@ -64,6 +108,9 @@ function Register() {
 
             <input
               type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Create a password"
               className="w-full rounded-xl border border-[#d2d2d7] bg-white px-4 py-3.5 text-[17px] text-[#1d1d1f] outline-none transition focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10"
             />

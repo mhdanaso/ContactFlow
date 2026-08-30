@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 function Login() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 py-10">
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md flex-col justify-center">
