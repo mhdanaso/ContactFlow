@@ -1,12 +1,58 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const handleChange = (event) => {
+  const { name, value } = event.target;
+
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+};
+  const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  setLoading(true);
+  setError('');
+
+  try {
+    const response = await fetch(
+      'http://localhost:5000/api/auth/login',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || 'Login failed');
+      return;
+    }
+
+    localStorage.setItem('token', data.token);
+    navigate('/dashboard');
+  } catch (error) {
+    setError('Unable to connect to the server. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-6 py-10">
@@ -34,6 +80,7 @@ function Login() {
 
         {/* Form */}
         <motion.form
+          onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -47,6 +94,9 @@ function Login() {
             <input
               type="email"
               placeholder="name@example.com"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full rounded-xl border border-[#d2d2d7] bg-white px-4 py-3.5 text-[17px] text-[#1d1d1f] outline-none transition focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10"
             />
           </div>
@@ -58,6 +108,9 @@ function Login() {
 
             <input
               type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Enter your password"
               className="w-full rounded-xl border border-[#d2d2d7] bg-white px-4 py-3.5 text-[17px] text-[#1d1d1f] outline-none transition focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10"
             />
@@ -68,7 +121,7 @@ function Login() {
             type="submit"
             className="mt-3 w-full rounded-xl bg-[#1d1d1f] py-3.5 text-[17px] font-medium text-white transition hover:bg-[#2c2c2e]"
           >
-            Sign in
+            {loading ? 'Signing in...' : 'Sign in'}
           </motion.button>
         </motion.form>
 
