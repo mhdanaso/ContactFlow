@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Contacts() {
   const [contacts, setContacts] = useState([]);
@@ -101,6 +102,13 @@ const handleAddContact = async (event) => {
   }
 };
 
+const navigate = useNavigate();
+
+const handleLogout = () => {
+  localStorage.removeItem('token');
+  navigate('/');
+};
+
   useEffect(() => {
   const fetchContacts = async () => {
     try {
@@ -186,6 +194,49 @@ const handleDeleteContact = async (contactId) => {
 
 return (
   <main className="min-h-screen bg-[#f5f5f7]">
+
+    {/* Navigation */}
+    <nav className="border-b border-[#d2d2d7]/60 bg-[#f5f5f7]/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+
+        {/* Logo */}
+        <Link to="/dashboard" className="flex items-center gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1d1d1f] text-sm font-semibold text-white">
+            C
+          </div>
+
+          <span className="text-lg font-semibold tracking-tight text-[#1d1d1f]">
+            ContactFlow
+          </span>
+        </Link>
+
+        {/* Navigation links */}
+        <div className="flex items-center gap-6">
+          <Link
+            to="/dashboard"
+            className="text-sm text-[#6e6e73] transition hover:text-[#1d1d1f]"
+          >
+            Dashboard
+          </Link>
+
+          <Link
+            to="/contacts"
+            className="text-sm font-medium text-[#1d1d1f]"
+          >
+            Contacts
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="rounded-lg border border-[#d2d2d7] px-3 py-1.5 text-sm font-medium text-[#1d1d1f] transition hover:bg-[#e8e8ed]"
+          >
+            Log out
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
     <div className="mx-auto max-w-6xl px-6 py-14">
 
       {/* Heading */}
@@ -258,7 +309,10 @@ return (
       </div>
 
       <button
-        onClick={() => setShowForm(false)}
+        onClick={() =>{setShowForm(false);
+          setEditingContact(null);
+        }}
+        
         className="text-sm text-[#6e6e73] hover:text-[#1d1d1f]"
       >
         Cancel

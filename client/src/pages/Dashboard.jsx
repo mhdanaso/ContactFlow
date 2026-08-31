@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 function Dashboard() {
   const [contacts, setContacts] = useState([]);
@@ -43,6 +44,12 @@ const newContacts = contacts.filter(
   (contact) => contact.status === 'New'
 ).length;
   
+const navigate = useNavigate();
+
+const handleLogout = () => {
+  localStorage.removeItem('token');
+  navigate('/');
+};
 
   return (
     <main className="min-h-screen bg-[#f5f5f7]">
@@ -52,7 +59,7 @@ const newContacts = contacts.filter(
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <Link to="/dashboard" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1d1d1f] text-sm font-semibold text-white">
               C
             </div>
@@ -60,12 +67,31 @@ const newContacts = contacts.filter(
             <span className="text-lg font-semibold tracking-tight text-[#1d1d1f]">
               ContactFlow
             </span>
-          </div>
+          </Link>
 
           {/* User placeholder */}
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e8e8ed] text-sm font-medium text-[#1d1d1f]">
-            U
-          </div>
+         <div className="flex items-center gap-6">
+     <Link
+    to="/dashboard"
+    className="text-sm font-medium text-[#1d1d1f]"
+  >
+    Dashboard
+  </Link>
+
+  <Link
+    to="/contacts"
+    className="text-sm text-[#6e6e73] transition hover:text-[#1d1d1f]"
+  >
+    Contacts
+  </Link>
+
+  <button
+    onClick={handleLogout}
+    className="rounded-lg border border-[#d2d2d7] px-3 py-1.5 text-sm font-medium text-[#1d1d1f] transition hover:bg-[#e8e8ed]"
+  >
+    Log out
+  </button>
+</div>
 
         </div>
       </nav>
