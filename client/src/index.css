@@ -5,3 +5,36 @@
 body {
   font-family: "Inter", sans-serif;
 }
+
+@keyframes sageFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(60px, 35px, 0) scale(1.1);
+  }
+}
+
+@keyframes eucalyptusFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-55px, -40px, 0) scale(1.12);
+  }
+}
+
+@keyframes champagneFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(45px, -35px, 0) scale(1.1);
+  }
+}

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
+import { Users, Activity, Sparkles } from 'lucide-react';
+import ShaderBackground from '../components/ShaderBackground';
+import NetworkGraphic from '../components/NetworkGraphic';
 
 
 function Dashboard() {
@@ -52,52 +55,67 @@ const handleLogout = () => {
 };
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7]">
+    <main className="relative min-h-screen overflow-hidden bg-[#DDE9E1]">
+      <ShaderBackground />
       
       {/* Navigation */}
-      <nav className="border-b border-[#d2d2d7]/60 bg-[#f5f5f7]/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          
-          {/* Logo */}
-          <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#1d1d1f] text-sm font-semibold text-white">
-              C
-            </div>
+   <nav className="relative z-10 border-b border-white/50 bg-[#F7F3EC]/60 backdrop-blur-2xl">
+  <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-6">
 
-            <span className="text-lg font-semibold tracking-tight text-[#1d1d1f]">
-              ContactFlow
-            </span>
-          </Link>
+    {/* Logo */}
+    <Link
+      to="/dashboard"
+      className="group flex items-center gap-3"
+    >
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1d1d1f] text-sm font-semibold text-white shadow-sm"
+      >
+        C
+      </motion.div>
 
-          {/* User placeholder */}
-         <div className="flex items-center gap-6">
-     <Link
-    to="/dashboard"
-    className="text-sm font-medium text-[#1d1d1f]"
-  >
-    Dashboard
-  </Link>
+      <span className="text-lg font-semibold tracking-tight text-[#1d1d1f]">
+        ContactFlow
+      </span>
+    </Link>
 
-  <Link
-    to="/contacts"
-    className="text-sm text-[#6e6e73] transition hover:text-[#1d1d1f]"
-  >
-    Contacts
-  </Link>
+    {/* Navigation Links */}
+    <div className="flex items-center gap-2">
 
-  <button
-    onClick={handleLogout}
-    className="rounded-lg border border-[#d2d2d7] px-3 py-1.5 text-sm font-medium text-[#1d1d1f] transition hover:bg-[#e8e8ed]"
-  >
-    Log out
-  </button>
-</div>
+      {/* Dashboard */}
+      <Link
+        to="/dashboard"
+        className="relative rounded-xl bg-white/50 px-4 py-2 text-sm font-medium text-[#1d1d1f] shadow-sm transition hover:bg-white/70"
+      >
+        Dashboard
+      </Link>
 
-        </div>
-      </nav>
+      {/* Contacts */}
+      <Link
+        to="/contacts"
+        className="rounded-xl px-4 py-2 text-sm text-[#6e6e73] transition hover:bg-white/50 hover:text-[#1d1d1f]"
+      >
+        Contacts
+      </Link>
+
+      {/* Divider */}
+      <div className="mx-2 h-6 w-px bg-[#d2d2d7]/60" />
+
+      {/* Logout */}
+      <button
+        onClick={handleLogout}
+        className="rounded-xl border border-[#d2d2d7]/70 bg-white/40 px-4 py-2 text-sm font-medium text-[#1d1d1f] shadow-sm transition hover:bg-white/70 active:scale-[0.98]"
+      >
+        Log out
+      </button>
+
+    </div>
+  </div>
+        </nav>
 
       {/* Dashboard content */}
-      <div className="mx-auto max-w-6xl px-6 py-14">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16">
 
         {/* Heading */}
         <motion.div
@@ -118,51 +136,103 @@ const handleLogout = () => {
           </p>
         </motion.div>
 
-        {/* Stats placeholder */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-[#6e6e73]">
-              Total Contacts
-            </p>
 
-            <p className="mt-3 text-4xl font-semibold tracking-tight text-[#1d1d1f]">
-              {totalContacts}
-            </p>
-          </div>
+      <div className="grid gap-6 sm:grid-cols-3">
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-[#6e6e73]">
-              Active
-            </p>
+  {/* Total Contacts */}
+  <motion.div
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.1 }}
+    className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/55 p-7 shadow-[0_12px_40px_rgba(31,38,135,0.08)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/65"
+  >
+    {/* Decorative glow */}
+    <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/40 blur-2xl transition-transform duration-500 group-hover:scale-150" />
 
-            <p className="mt-3 text-4xl font-semibold tracking-tight text-[#1d1d1f]">
-              {activeContacts}
-            </p>
-          </div>
+    <div className="relative">
+<div className="flex items-center justify-between">
+  <p className="text-sm font-medium text-[#6e6e73]">
+    Total Contacts
+  </p>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-[#6e6e73]">
-              New
-            </p>
+  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#e8f1ff] text-[#3478f6]">
+    <Users size={19} strokeWidth={1.8} />
+  </div>
+    </div>
 
-            <p className="mt-3 text-4xl font-semibold tracking-tight text-[#1d1d1f]">
-              {newContacts}
-            </p>
-          </div>
-        </motion.div>
+      <p className="mt-4 text-4xl font-semibold tracking-tight text-[#1d1d1f]">
+        {totalContacts}
+      </p>
+    </div>
+  </motion.div>
 
+
+  {/* Active */}
+  <motion.div
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/55 p-7 shadow-[0_12px_40px_rgba(31,38,135,0.08)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/65"
+  >
+    {/* Decorative glow */}
+    <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/40 blur-2xl transition-transform duration-500 group-hover:scale-150" />
+
+    <div className="relative">
+<div className="flex items-center justify-between">
+  <p className="text-sm font-medium text-[#6e6e73]">
+    Active
+  </p>
+
+  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#e8f7ed] text-[#218739]">
+    <Activity size={19} strokeWidth={1.8} />
+  </div>
+   </div>
+
+      <p className="mt-4 text-4xl font-semibold tracking-tight text-[#1d1d1f]">
+        {activeContacts}
+      </p>
+    </div>
+  </motion.div>
+
+
+  {/* New */}
+  <motion.div
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.3 }}
+    className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/55 p-7 shadow-[0_12px_40px_rgba(31,38,135,0.08)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/65"
+  >
+    {/* Decorative glow */}
+    <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/40 blur-2xl transition-transform duration-500 group-hover:scale-150" />
+
+    <div className="relative">
+<div className="flex items-center justify-between">
+  <p className="text-sm font-medium text-[#6e6e73]">
+    New
+  </p>
+
+  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff0e8] text-[#d86b35]">
+    <Sparkles size={19} strokeWidth={1.8} />
+  </div>
+   </div>
+
+      <p className="mt-4 text-4xl font-semibold tracking-tight text-[#1d1d1f]">
+        {newContacts}
+      </p>
+    </div>
+  </motion.div>
+
+</div>
+
+      
         {/* Recent contacts placeholder */}
         <motion.section
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-12"
+          className="mt-12 grid gap-6 lg:grid-cols-[1.4fr_0.9fr]"
         >
+        <div>
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold tracking-tight text-[#1d1d1f]">
               Recent contacts
@@ -171,7 +241,7 @@ const handleLogout = () => {
             <Link to="/contacts" className="text-sm font-medium text-[#1d1d1f] underline decoration-[#86868b]/40 underline-offset-4 hover:decoration-[#1d1d1f]">
               View all
             </Link>
-          </div>
+         </div>
 
           <div className="mt-5 overflow-hidden rounded-2xl bg-white shadow-sm">
           {contacts.length === 0 ? (
@@ -200,12 +270,21 @@ const handleLogout = () => {
           {contact.status}
         </span>
       </div>
+    
     ))
     )}
       </div>
-        </motion.section>
-
       </div>
+          
+          {/* Network Graphic */}
+       <div className="lg:mt-[52px]">
+        <NetworkGraphic />
+          </div>
+        </motion.section>
+       
+      </div>
+
+      
     </main>
   );
 }
